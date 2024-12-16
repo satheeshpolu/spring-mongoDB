@@ -27,9 +27,10 @@ public class JournalEntryControllerV2 {
     public ResponseEntity<?> getAllJournalByUser(@PathVariable String userName) {
         User userData = userService.findByUserName(userName);
         List<JournalEntry> all = userData.getJournalEntries();
-        if (all != null && !all.isEmpty()) {
-            return new ResponseEntity<>(all, HttpStatus.OK);
-        }
+        //List<JournalEntry> all = userData.getJournalEntries();
+//        if (all != null && !all.isEmpty()) {
+//            return new ResponseEntity<>(all, HttpStatus.OK);
+//        }
 
         return new ResponseEntity<>(all, HttpStatus.NO_CONTENT);
     }
@@ -37,8 +38,8 @@ public class JournalEntryControllerV2 {
     @PostMapping("{userName}")
     public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry entry, @PathVariable String userName) {
         try {
-//            User user = userService.findByUserName(userName);
-            entry.setDate(LocalDateTime.now());
+           User user = userService.findByUserName(userName);
+            //entry.setDate(LocalDateTime.now());
             journalEntryService.saveEntry(entry, userName);
             return new ResponseEntity<>(entry, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -55,7 +56,7 @@ public class JournalEntryControllerV2 {
 
     @DeleteMapping("/id/{userName}/{id}")
     public ResponseEntity<?> deleteJournalEntryByID(@PathVariable ObjectId id, @PathVariable String userName) { // ? = Wildcard
-        journalEntryService.deleteById(id, userName);
+        // journalEntryService.deleteById(id, userName);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
